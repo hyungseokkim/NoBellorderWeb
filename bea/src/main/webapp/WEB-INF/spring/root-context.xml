@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>oracle.jdbc.driver.OracleDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:oracle:thin:@168.126.146.33:1521:orcl</value>
+		</property>
+		<property name="username">
+			<value>20132392</value>
+		</property>
+		<property name="password">
+			<value>2158614</value>
+		</property>
+		<property name="maxActive">
+			<value>5</value>
+		</property>
+		<property name="maxIdle">
+			<value>5</value>
+		</property>
+		<property name="maxWait">
+			<value>10000</value>
+		</property>
+		</bean>
+		
+ 
+  <!-- enable transaction demarcation with annotations -->
+    <tx:annotation-driven />
+<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
+ 	<bean id="incrementerManager" class="org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer">  
+     <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="incrementerName">   
+            <value>SEQ_SID</value>
+        </property>
+    </bean>
+    
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+ 	
+<!-- MenuDao -->
+<bean id="menuDao" class="com.jang.bea.dao.MenuDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+      
+<!-- MenuService -->
+<bean id="menuService" class="com.jang.bea.service.MenuServiceImpl">
+    <property name="menuDao">
+        <ref bean="menuDao"/>
+    </property>
+    </bean>
+    
+    <!-- NoticeDao -->
+<bean id="noticeDao" class="com.jang.bea.dao.NoticeDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+      
+<!-- NoticeService -->
+<bean id="noticeService" class="com.jang.bea.service.NoticeServiceImpl">
+    <property name="noticeDao">
+        <ref bean="noticeDao"/>
+    </property>
+    </bean>
+    
+    
+        <!-- IdentifyDao -->
+<bean id="identifyDao" class="com.jang.bea.dao.IdentifyDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+      
+<!-- IdentifyService -->
+<bean id="identifyService" class="com.jang.bea.service.IdentifyServiceImpl">
+    <property name="identifyDao">
+        <ref bean="identifyDao"/>
+    </property>
+    </bean>
+    
+           <!-- Order_listDao -->
+<bean id="orderDao" class="com.jang.bea.dao.OrderDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+      
+<!-- Order_listService -->
+<bean id="orderService" class="com.jang.bea.service.OrderServiceImpl">
+    <property name="orderDao">
+        <ref bean="orderDao"/>
+    </property>
+    </bean>
+    
+    
+<!-- Discount_benefitDao -->
+<bean id="discount_benefitDao" class="com.jang.bea.dao.Discount_benefitDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+      
+<!-- Discount_benefitService -->
+<bean id="discount_benefitService" class="com.jang.bea.service.Discount_benefitServiceImpl">
+    <property name="discount_benefitDao">
+        <ref bean="discount_benefitDao"/>
+    </property>
+    </bean>
+	
+<!-- ShopService -->
+<bean id="shopService" class="com.jang.bea.service.ShopServiceImpl">
+    <property name="shopDao">
+        <ref bean="shopDao"/>
+    </property>
+    </bean>
+    
+<!-- ShopDao -->
+<bean id="shopDao" class="com.jang.bea.dao.ShopDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+      
+<!-- PostscriptService -->
+<bean id="postscriptService" class="com.jang.bea.service.PostscriptServiceImpl">
+    <property name="postscriptDao">
+        <ref bean="postscriptDao"/>
+    </property>
+    </bean>
+    
+<!-- PostscriptDao -->
+<bean id="postscriptDao" class="com.jang.bea.dao.PostscriptDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+      
+<!-- ManagerService -->
+<bean id="managerService" class="com.jang.bea.service.ManagerServiceImpl">
+    <property name="managerDao">
+        <ref bean="managerDao"/>
+    </property>
+    </bean>
+    
+<!-- ManagerDao -->
+<bean id="managerDao" class="com.jang.bea.dao.ManagerDaoImpl">
+    <property name="dataSource">
+        <ref bean="dataSource"/>
+    </property>
+      </bean>
+    
+    
+	
+			<!-- MessageSource -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages</value>
+			</list>
+		</property>
+	</bean>
+	
+		
+		
+		
+	</beans>
